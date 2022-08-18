@@ -1,0 +1,48 @@
+//
+// Created by intellij-pest on 2020-02-06
+// fasta
+// Author: Felipe Sciammarella
+//
+
+WHITESPACE = _{
+    " " | "\t" | NEWLINE
+}
+
+DNA_alignment = {
+    SOI ~ (fasta_dna_rec|fasta_rna_rec)+ ~ EOI
+}
+RNA_alignment ={
+    SOI ~ fasta_rna_rec+ ~ EOI
+}
+
+fasta_dna_rec = {
+    DEFSTART ~ definition ~ dna_sequence+
+}
+fasta_rna_rec = {
+    DEFSTART ~ definition ~ rna_sequence+
+}
+DEFSTART = _{
+    ">"
+}
+definition=@{
+    ((! NEWLINE ) ~ ANY)+
+}
+dna_sequence ={
+    dna_seq_line+
+}
+dna_seq_line =@{
+    DNA_RESIDUES+
+}
+rna_sequence ={
+    rna_seq_line+
+}
+rna_seq_line =@{
+    RNA_RESIDUES+
+}
+
+DNA_RESIDUES=_{
+    ^"A" | ^"T" | ^"C" | ^"G" | ^"W" | ^"S" | ^"K"| ^"M" | ^"Y" | ^"R" | ^"N" | ^"B" | ^"V" | ^"D" | ^"H" | "-"
+}
+RNA_RESIDUES=_{
+    ^"A" | ^"U" | ^"C" | ^"G" | ^"W" | ^"S" | ^"K"| ^"M" | ^"Y" | ^"R" | ^"N" | ^"B" | ^"V" | ^"D" | ^"H" | "-"
+}
